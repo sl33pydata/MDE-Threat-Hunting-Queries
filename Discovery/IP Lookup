@@ -1,4 +1,4 @@
 // A very simple query to look up who and what device tried accessing a certain IP address
 DeviceNetworkEvents
-| where RemoteIP == "[insert IP here]" // insert the IP you wish to search for in the square brackets
+| where RemoteIP == "[insert IP here]" // insert IP in between ""'s and remove []'s
 | project Timestamp, DeviceName, InitiatingProcessAccountName, RemoteIP, RemotePort, LocalIP, LocalPort, Protocol, RemoteUrl, ActionType
