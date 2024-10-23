@@ -1,0 +1,7 @@
+// Query to look up activity on a specific port number also includes a tuning out option to get rid of any false positives
+DeviceNetworkEvents
+| where RemotePort == 7777 //input the port number you wish to view
+| where RemoteIP != "127.0.0.1" and not(RemoteIP startswith "172.") // make any tuning you would like 
+| summarize DeviceCount = dcount(DeviceName) by DeviceName, RemoteIP, ActionType, ReportId, Timestamp
+| project DeviceName, RemoteIP, ActionType, ReportId, Timestamp, DeviceCount
+| order by Timestamp desc 
