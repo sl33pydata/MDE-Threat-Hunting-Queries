@@ -1,0 +1,9 @@
+// Query to look up information on a specific Device for threat hunting
+// Great query for when you have a device you are investigating to get a better idea what has been done on that machine
+let deviceName = "[insert device name here]"; // insert device name in between ""'s and remove []'s
+DeviceInfo
+| where DeviceName contains deviceName
+| project DeviceId, DeviceName, LoggedOnUsers, Timestamp
+| join kind=inner(DeviceNetworkEvents | project DeviceId, LocalIP, InitiatingProcessAccountName, RemoteUrl, ActionType, Timestamp, InitiatingProcessVersionInfoInternalFileName) on DeviceId
+| join kind=inner(DeviceProcessEvents | project DeviceId, FileName, FolderPath, AccountName, Timestamp, ProcessCommandLine, InitiatingProcessVersionInfoInternalFileName) on DeviceId
+| project DeviceId, Timestamp, DeviceName, InitiatingProcessAccountName , LocalIP, RemoteUrl, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessVersionInfoInternalFileName
