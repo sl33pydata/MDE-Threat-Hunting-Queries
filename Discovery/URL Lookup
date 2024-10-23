@@ -1,7 +1,7 @@
 // This query finds network communication to specific URL similar to the IP Lookup
 // Please note that in line #7 it filters RemoteUrl using has operator, which looks for a "whole term" and runs faster.
 // Example: RemoteUrl has "microsoft" matches "www.microsoft.com" but not "microsoftonline.com"
-let partialRemoteUrlToDetect = "[insert word or URL here]"; // Change this to a URL you'd like to find machines connecting to
+let partialRemoteUrlToDetect = "[insert word or URL here]"; // insert URL or keyword in between ""'s and remove []'s
 DeviceNetworkEvents  
 | where Timestamp > ago(30d)
 and RemoteUrl has partialRemoteUrlToDetect // Can be changed to "contains" operator as explained above
