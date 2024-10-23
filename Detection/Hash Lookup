@@ -1,0 +1,4 @@
+// You can change what type of Hash you wish to search just replace anywhere you see SHA256 with MD5 for example  
+let ReportSHA256=dynamic([""]); // Insert hash in between ""'s to search
+union DeviceFileEvents, DeviceEvents, DeviceProcessEvents
+| where SHA256 has_any(ReportSHA256)
