@@ -1,0 +1,10 @@
+// This query references Proofpoints Compromised IP List and checks if any device made a connection to an IP listed
+// The URL for emerging threats is updated daily so it's a good check for detection on your network
+let CompIP = externaldata(CompIP: string)[@"https://rules.emergingthreats.net/open/snort-2.9.0/rules/compromised-ips.txt"] with (format="txt", ignoreFirstRecord=True);
+let Timeframe = 30d; // Choose the best timeframe for your investigation
+DeviceNetworkEvents
+| where Timestamp >= ago(Timeframe)
+| where ActionType == "ConnectionSuccess"
+| where Protocol == "Tcp"
+| where RemoteIP in (CompIP) 
+| project Timestamp, DeviceId, DeviceName, ActionType, RemoteIP, RemoteUrl, InitiatingProcessSHA1, InitiatingProcessSHA256, InitiatingProcessMD5, InitiatingProcessFileName
