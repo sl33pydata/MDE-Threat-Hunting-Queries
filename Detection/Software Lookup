@@ -1,0 +1,4 @@
+// A simple query to lookup specific software on your network
+DeviceTvmSoftwareInventory
+| where SoftwareName contains "" // insert name between ""'s
+| project DeviceName, SoftwareName, SoftwareVersion
