@@ -1,1 +1,19 @@
-#
+// A simple union KQL query to help search for a keyword in a file or process 
+let keyword = "[insert word here]"; // add your word inside the square brackets
+union ( 
+    DeviceFileEvents
+    | where FileName has_cs keyword or FolderPath has_cs keyword or InitiatingProcessFolderPath has_cs keyword
+    | where FolderPath contains "[insert word here]" // add your word inside the square brackets
+    | project Timestamp, DeviceName, FileName, FolderPath, ActionType
+    ),
+    (
+        DeviceEvents
+        | where AdditionalFields has_cs keyword or ActionType has_cs keyword or ProcessCommandLine has_cs keyword
+        | project Timestamp, DeviceName, InitiatingProcessFileName, AdditionalFields, ActionType
+        ),
+        (
+            DeviceProcessEvents
+            | where ProcessCommandLine has_cs keyword or InitiatingProcessFileName has_cs keyword
+            | project Timestamp, DeviceName, ProcessCommandLine, InitiatingProcessFileName
+            )
+            | sort by Timestamp desc
